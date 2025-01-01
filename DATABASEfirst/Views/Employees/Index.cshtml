@@ -1,0 +1,52 @@
+﻿@model IEnumerable<DATABASEfirst.Employee>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Employee List</h2>
+<div class="d-flex justify-content-end mb-2">
+    <a href="@Url.Action("Create","Employees")" class="btn btn-outline-primary">Add New Employee</a>
+</div>
+<div>
+    @foreach (var item in Model)
+    {
+        <div class="card mb-2">
+            <div class="card-header justify-content-between d-flex">
+                <div>
+                    <img src="@item.Picture" alt="Default" width="80" height="80" class="rounded" /><br />
+                    <label class="mr-2"><b>First Name :-</b>@Html.DisplayFor(x => item.FullName)</label><br />
+                    <label class="mr-2"><b>Active :-</b>@Html.DisplayFor(x => item.IsActive)</label><br />
+                    <label class="mr-2"><b>Mobile Number :-</b>@Html.DisplayFor(x => item.MobileNo)</label><br />
+                    <label class="mr-2"><b>Date Of Birth :-</b>@Html.DisplayFor(x => item.DateOfBirth)</label><br />
+                </div>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-striped table-sm">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>Skill ID</th>
+                            <th>Skill Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var qe in item.QualificationEntries)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(x => qe.SkillId)</td>
+                                <td>@Html.DisplayFor(x => qe.Skill.SkillName)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer d-flex justify-content-end">
+                <a href="@Url.Action("Edit","Employees",new {id=item.EmployeeID})" class="btn btn-warning">Edit</a>_
+                <form method="post" action="@Url.Action("Delete","Employees",new {id = item.EmployeeID})"
+                      onsubmit="return confirm('You want to delete this record')" style="display:inline">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    }
+</div>
+

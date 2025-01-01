@@ -1,0 +1,111 @@
+﻿@model DATABASEfirst.ViewModel.EmployeeViewModel
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit Employee</h2>
+<div class="d-flex justify-content-end">
+    <a href="@Url.Action("Index","Employees")" class="btn btn-outline-primary">Back To Employee List</a>
+</div>
+
+@using (Html.BeginForm("Edit", "Employees", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="row">
+        <div class="col-6">
+            <h3>Employee Information</h3>
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(x => x.EmployeeID)
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="mb-3">
+                @Html.LabelFor(x => x.FirstName, htmlAttributes: new { @class = "control-lable col-3" })
+                @Html.EditorFor(x => x.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(x => x.FirstName, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(x => x.lastName, htmlAttributes: new { @class = "control-lable col-3" })
+                @Html.EditorFor(x => x.lastName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(x => x.lastName, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(x => x.DateOfBirth, htmlAttributes: new { @class = "control-lable col-3" })
+                @Html.EditorFor(x => x.DateOfBirth, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(x => x.DateOfBirth, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(x => x.Salary, htmlAttributes: new { @class = "control-lable col-3" })
+                @Html.EditorFor(x => x.Salary, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(x => x.Salary, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(x => x.IsActive, htmlAttributes: new { @class = "control-lable col-3" })
+                @Html.EditorFor(x => x.IsActive)
+                @Html.ValidationMessageFor(x => x.IsActive, "", new { @class = "text-danger" })
+            </div>
+
+
+            <div class="mb-3">
+                @Html.LabelFor(x => x.MobileNo, htmlAttributes: new { @class = "control-lable col-3" })
+                @Html.EditorFor(x => x.MobileNo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(x => x.MobileNo, "", new { @class = "text-danger" })
+            </div>
+            <div class="mb-3">
+                <img src="@Model.Picture" id="Imgfile" alt="Default" width="80" height="80" class="rounded" />
+                <div>
+                    <input onchange="ReadUrl(this)" type="file" id="UPimage" name="PicturePath" style="display:none" />
+                    <label for="UPimage" class="btn"><b>Uplode Image Here</b></label>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-6">
+            <h3>Add Skill</h3>
+            <div class="d-flex justify-content-end">
+                <a href="#" id="btnPlus" style="width:80px" class="btn btn-warning">Add</a>
+            </div>
+            <div class="SkillContainer">
+                @foreach (var item in Model.SkillList)
+                {
+                    @Html.Action("AddSkills", "Employees", new { id = item })
+                }
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-end">
+        <input type="submit" value="Update" class="btn btn-warning" />
+    </div>
+}
+<script src="~/Scripts/jquery-3.7.1.min.js"></script>
+<script>
+    $("#btnPlus").click(function (e) {
+        e.preventDefault();
+        var sk = $(".SkillContainer")
+        $.ajax({
+            url: "/Employees/AddSkills",
+            type: "GET",
+            success: function (data) {
+                sk.append(data)
+            }
+        })
+    })
+    $(document).on("click", "#deleteSkill", function (e) {
+        e.preventDefault();
+        $(this).parent().parent().remove()
+    })
+
+    function ReadUrl(i) {
+        if (i.files && i.files[0]) {
+            var readar = new FileReader();
+            readar.onload = function (e) {
+                $("#Imgfile").attr('src', e.target.result);
+            }
+            readar.readAsDataURL(i.files[0])
+        }
+    }
+
+</script>

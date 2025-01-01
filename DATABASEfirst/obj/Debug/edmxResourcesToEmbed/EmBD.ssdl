@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="EMPdbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="EmployeeID" />
+    </Key>
+    <Property Name="EmployeeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FirstName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="lastName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="DateOfBirth" Type="datetime" Nullable="false" />
+    <Property Name="Salary" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+    <Property Name="Picture" Type="varchar(max)" />
+    <Property Name="MobileNo" Type="varchar" MaxLength="11" Nullable="false" />
+  </EntityType>
+  <EntityType Name="QualificationEntry">
+    <Key>
+      <PropertyRef Name="QualificationEntryId" />
+    </Key>
+    <Property Name="QualificationEntryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="EmployeeId" Type="int" Nullable="false" />
+    <Property Name="SkillId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Skill">
+    <Key>
+      <PropertyRef Name="SkillId" />
+    </Key>
+    <Property Name="SkillId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SkillName" Type="varchar(max)" Nullable="false" />
+  </EntityType>
+  <Association Name="FK__Qualifica__Emplo__3A81B327">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="QualificationEntry" Type="Self.QualificationEntry" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="EmployeeID" />
+      </Principal>
+      <Dependent Role="QualificationEntry">
+        <PropertyRef Name="EmployeeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Qualifica__Skill__3B75D760">
+    <End Role="Skill" Type="Self.Skill" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="QualificationEntry" Type="Self.QualificationEntry" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Skill">
+        <PropertyRef Name="SkillId" />
+      </Principal>
+      <Dependent Role="QualificationEntry">
+        <PropertyRef Name="SkillId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="EMPdbModelStoreContainer">
+    <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="QualificationEntry" EntityType="Self.QualificationEntry" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Skill" EntityType="Self.Skill" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__Qualifica__Emplo__3A81B327" Association="Self.FK__Qualifica__Emplo__3A81B327">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="QualificationEntry" EntitySet="QualificationEntry" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Qualifica__Skill__3B75D760" Association="Self.FK__Qualifica__Skill__3B75D760">
+      <End Role="Skill" EntitySet="Skill" />
+      <End Role="QualificationEntry" EntitySet="QualificationEntry" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

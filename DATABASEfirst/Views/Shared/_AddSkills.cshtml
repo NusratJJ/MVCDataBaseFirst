@@ -1,0 +1,10 @@
+﻿@model DATABASEfirst.Skill
+<div class="form-group-row">
+    <div class="col-8">
+        @Html.DropDownListFor(x => x.SkillId, ViewBag.skill as SelectList, "----------SELECT---------",
+  htmlAttributes: new { @class = "form-control mb-2" })
+    </div>
+    <div class="col-2">
+        <a href="#" id="deleteSkill" class="btn btn-danger">Delete</a>
+    </div>
+</div>
